@@ -95,6 +95,12 @@ fn main() {
         }
         // check conditions for an ad playing
         let ad = response.starts_with("spotify:ad:") || response.starts_with("/com/spotify/ad/") || response.is_empty(); 
+        
+        // check alternate conditions for an ad playing
+        response =  run_cmd("playerctl --player=spotify metadata --format '{{xesam:title}}'");
+        response.pop();
+        
+        ad = ad || response.starts_with("Advertisement") || response.starts_with("advertisement");
 
         if ad && !muted {
             // if not muted and is an ad then mute
